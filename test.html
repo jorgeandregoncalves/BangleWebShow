@@ -20,13 +20,28 @@ Bangle.on('HRM',print);
 Bangle.on('HRM', function (hrm) {
     var b = [
         "B",
-        hrm[1],
-        hrm[2]
+        hrm.bpm,
+        hrm.confidence
         ]
     Bluetooth.println(b.join(","));
 });
 Bangle.on('GPS', print);
+Bangle.on('GPS', function(fix){
+  var g = [
+  fix.lat": number,      // Latitude in degrees
+  fix.lon,      // Longitude in degrees
+  fix.alt,      // altitude in M
+  fix.speed,    // Speed in kph
+  fix.satellites,    // Number of satellites
+  fix.fix            // NMEA Fix state - 0 is no fix
+  ]
+  Bluetooth.println(g.join(","));
+};
 Bangle.on('step', print);
+Bangle.on('step', function(up){
+  var s = [up]
+  Bluetooth.println(s.join(","));
+});
 Bangle.on('accel',function(a) {
   var d = [
     "A",
