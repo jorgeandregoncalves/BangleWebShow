@@ -102,7 +102,7 @@ document.getElementById("btnConnect").addEventListener("click", function() {
     });
     // First, reset the Bangle
     connection.write("reset();\n", function() {
-      connection.write("\x03\x10if(1){"+FIRST_BANGLE_CODE+"}\n"); //could be causing problems
+      //connection.write("\x03\x10if(1){"+FIRST_BANGLE_CODE+"}\n"); //could be causing problems
       // Wait for it to reset itself
       setTimeout(function() {
         // Now upload our code to it
