@@ -16,30 +16,17 @@
 var BANGLE_CODE = `
 Bangle.setGPSPower(1)
 Bangle.setHRMPower(1);
+Bangle.on('HRM',print);
 Bangle.on('HRM', function (hrm) {
     var b = [
         "B",
-        hrm.bpm,
-        hrm.confidence
+        hrm[1],
+        hrm[2]
         ]
     Bluetooth.println(b.join(","));
 });
-Bangle.on('GPS', function(fix){
-  var g = [
-  "G",
-  fix.lat,      // Latitude in degrees
-  fix.lon,      // Longitude in degrees
-  fix.alt,      // altitude in M
-  fix.speed,    // Speed in kph
-  fix.satellites,    // Number of satellites
-  fix.fix            // NMEA Fix state - 0 is no fix
-  ]
-  Bluetooth.println(g.join(","));
-};
-Bangle.on('step', function(up){
-  var s = [up]
-  Bluetooth.println(s.join(","));
-});
+Bangle.on('GPS', print);
+Bangle.on('step', print);
 Bangle.on('accel',function(a) {
   var d = [
     "A",
