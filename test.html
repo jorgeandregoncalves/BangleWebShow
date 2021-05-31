@@ -1,6 +1,6 @@
 <html>
  <head>
-  <title>Bangle.js Accelerometer streaming</title>
+  <title>Bangle.js Streaming</title>
  </head>
  <body>
 <script src="https://www.puck-js.com/puck.js"></script>
@@ -8,9 +8,63 @@
 <p>X: <span class="bar"><span id="barX"></span></span></p>
 <p>Y: <span class="bar"><span id="barY"></span></span></p>
 <p>Z: <span class="bar"><span id="barZ"></span></span></p>
+</br>
+<p>BPM: <span class="bar"><span id="barBpm"></span></span></p>
+<p>Confidence: <span class="bar"><span id="barConf"></span></span></p>
+</br>
+<p>Lat: <span class="barLat"><span id="barg"></span></span></p>
+
 <script>
 // Code to upload to Bangle.js
+var FIRST_BANGLE_CODE = `
+
+g.clear(); // draw the current counter value
+g.setFontAlign(0,0); // center font
+g.setFont("6x8",8); // bitmap font, 8x magnified
+
+g.drawString("BOTÃO", g.getWidth()/2, g.getHeight()/2); // optional - this keeps the watch LCD lit up
+g.flip();
+
+
+Bangle.setGPSPower(1)
+Bangle.setHRMPower(1);
+`
+
 var BANGLE_CODE = `
+
+if (BTN5.read()){
+  Bluetooth.println("HELP");
+}
+
+
+Bangle.on('HRM', function (hrm) {
+    var b = [
+        "B",
+        hrm.bpm,
+        hrm.confidence
+        ]
+    Bluetooth.println(b.join(","));
+});
+
+Bangle.on('GPS', function(fix){
+  var g = [
+  "G",
+  fix.lat,      // Latitude in degrees
+  fix.lon,      // Longitude in degrees
+  fix.alt,      // altitude in M
+  fix.speed,    // Speed in kph
+  fix.satellites,    // Number of satellites
+  fix.fix            // NMEA Fix state - 0 is no fix
+  ]
+  Bluetooth.println(g.join(","));
+};
+
+
+Bangle.on('step', function(up){
+  var s = [up]
+  Bluetooth.println(s.join(","));
+});
+
 Bangle.on('accel',function(a) {
   var d = [
     "A",
@@ -48,6 +102,7 @@ document.getElementById("btnConnect").addEventListener("click", function() {
     });
     // First, reset the Bangle
     connection.write("reset();\n", function() {
+      connection.write("\x03\x10if(1){"+FIRST_BANGLE_CODE+"}\n"); //could be causing problems
       // Wait for it to reset itself
       setTimeout(function() {
         // Now upload our code to it
@@ -75,6 +130,53 @@ function onLine(line) {
     setBarPos("barY", accel.y);
     setBarPos("barZ", accel.z);
   }
+ 
+  if (d[0]=="B") {
+     // we have an HRM reading
+     var hrm = {
+       bpm : parseInt(d[1]),
+       confidence : parseInt(d[2]),
+     };    
+     // Update bar positions
+     setBarPos("barBpm", hrm.bpm);
+     setBarPos("barConfidence", hrm.confidence);
+   }
+ 
+ if (d[0]=="G") {
+     // we have an Gps reading
+     var fix = {
+       lat : parseInt(d[1]),
+       lot : parseInt(d[2]),
+     };    
+     // Update bar positions
+     setBarPos("barLat", hrm.lat);
+     setBarPos("bar", hrm.confidence);
+     setBarPos("barLat", hrm.lat);
+     setBarPos("bar", hrm.confidence);
+     setBarPos("barLat", hrm.lat);
+     setBarPos("bar", hrm.confidence);
+     setBarPos("barLat", hrm.lat);
+     setBarPos("bar", hrm.confidence);
+     setBarPos("barLat", hrm.lat);
+     setBarPos("bar", hrm.confidence);
+   }
+
+  if (d[0]=="S") {
+     // we have an Gps reading
+     var up = {
+       steps : parseInt(s[1]),
+     };    
+     // Update bar positions
+     setBarPos("barLat", s.steps);
+   }
+  if (d[0]=="Help") {
+     // we have an Gps reading
+     var up = {
+       steps : parseInt(s[1]),
+     };    
+     // Update bar positions
+     setBarPos("barLat", s.steps);
+   }
 }
 // Set the position of each bar
 function setBarPos(id,d) {
