@@ -143,14 +143,16 @@ function onLine(line) {
      var fix = {
        lat : parseInt(d[1]),
        lot : parseInt(d[2]),
+       alt : parseInt(d[3]),
+       speed : parseInt(d[4]),
+       satellites : parseInt(d[7]),
      };    
      // Update bar positions
-     setBarPos("barLat", hrm.lat);
-     setBarPos("bar", hrm.confidence);
-     setBarPos("barAlt", hrm.alt);
-     setBarPos("bar", hrm.confidence);
-     setBarPos("barSpeed", hrm.speed);
-     setBarPos("bar", hrm.confidence);
+     setBarPos("barLat", fix.lat);
+     setBarPos("barLot", fix.lot);
+     setBarPos("barAlt", fix.alt);
+     setBarPos("barSpeed", fix.speed);
+     setBarPos("barSatellites", fix.satellites);
    }
  
   if (d[0]=="S") {
