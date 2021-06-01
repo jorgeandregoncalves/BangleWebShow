@@ -15,7 +15,9 @@
 <p>Lon: <span class="bar"><span id="barLon"></span></span></p>
 <p>Alt: <span class="bar"><span id="barAlt"></span></span></p>
 <p>Satellites: <span class="bar"><span id="barSatellites"></span></span></p>
-  
+<p>Steps: <span class="bar"><span id="barSteps"></span></span></p>
+<p>Help: <span class="bar"><span id="barHelp"></span></span></p>
+ 
 <script>
 // Code to upload to Bangle.js
 var BANGLE_CODE = `
@@ -161,15 +163,11 @@ function onLine(line) {
        steps : parseInt(s[1]),
      };    
      // Update bar positions
-     setBarPos("barLat", s.steps);
+     setBarPos("barSteps", s.steps);
    }
   if (d[0]=="Help") {
-     // we have an Gps reading
-     var up = {
-       steps : parseInt(s[1]),
-     };    
      // Update bar positions
-     setBarPos("barLat", s.steps);
+     setBarPos("barHelp", 5);
    }
 }
 // Set the position of each bar
