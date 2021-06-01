@@ -25,19 +25,15 @@ var BANGLE_CODE = `
 Bangle.setGPSPower(1)
 Bangle.setHRMPower(1);
 
-g.clear(); // draw the current counter value
-g.setFontAlign(0,0); // center font
-g.setFont("6x8",8); // bitmap font, 8x magnified
-g.drawString("BOTÃO", g.getWidth()/2, g.getHeight()/2); // optional - this keeps the watch LCD lit up
-g.flip();
 
-if (BTN1.read()){
-  Bluetooth.println("HELP");
-  g.clear(); // draw the current counter value
-  g.drawString("B", g.getWidth()/2, g.getHeight()/2); // optional - this keeps the watch LCD lit up
-  g.flip();
 
-}
+setWatch(function() {
+ g.clear(); // draw the current counter value
+ g.setFontAlign(0,0); // center font
+ g.setFont("6x8",8); // bitmap font, 8x magnified
+ g.drawString("BOTÃO", g.getWidth()/2, g.getHeight()/2); // optional - this keeps the watch LCD lit up
+ g.flip();
+}, BTN, {edge:"rising", debounce:50, repeat:true});
 
 
 Bangle.on('HRM', function (hrm) {
