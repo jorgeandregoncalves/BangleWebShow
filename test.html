@@ -126,17 +126,15 @@ function onLine(line) {
     setBarPos("barZ", accel.z);
   }
  
-  if (d[0]=="B") {
-     // we have an accelerometer reading
+   if (d[0]=="B") {
+     // we have an HRM reading
      var hrm = {
-       x : parseInt(d[1]),
-       y : parseInt(d[2]),
-       z : parseInt(d[3]),
+       bpm : parseInt(d[1]),
+       confidence : parseInt(d[2]),
      };    
      // Update bar positions
-     setBarPos("barb1", hrm.x);
-     setBarPos("barb2", hrm.y);
-     setBarPos("barb3", hrm.z);
+     setBarPos("barBpm", hrm.bpm);
+     setBarPos("barConfidence", hrm.confidence);
    }
  
  if (d[0]=="G") {
