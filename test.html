@@ -33,7 +33,7 @@ if (BTN5.read()){
   Bluetooth.println("HELP");
 }
 
-Bangle.on('HRM',print);
+
 Bangle.on('HRM', function (hrm) {
     var b = [
         "B",
