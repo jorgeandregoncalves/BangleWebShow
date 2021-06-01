@@ -1,6 +1,6 @@
 <html>
  <head>
-  <title>Bangle.js Streaming</title>
+  <title>Bangle.js Accelerometer streaming</title>
  </head>
  <body>
 <script src="https://www.puck-js.com/puck.js"></script>
@@ -8,26 +8,19 @@
 <p>X: <span class="bar"><span id="barX"></span></span></p>
 <p>Y: <span class="bar"><span id="barY"></span></span></p>
 <p>Z: <span class="bar"><span id="barZ"></span></span></p>
-</br>
-<p>BPM: <span class="bar"><span id="barBpm"></span></span></p>
-<p>Confidence: <span class="bar"><span id="barConf"></span></span></p>
-</br>
-<p>Lat: <span class="barLat"><span id="barg"></span></span></p>
-  
-  
+<p>BPM: <span class="bar"><span id="barb1"></span></span></p>
+<p>Confidence: <span class="bar"><span id="barb2"></span></span></p>
+<p>Idk: <span class="bar"><span id="barb3"></span></span></p>
 <script>
 // Code to upload to Bangle.js
 var BANGLE_CODE = `
 Bangle.setGPSPower(1)
 Bangle.setHRMPower(1);
-
 g.clear(); // draw the current counter value
 g.setFontAlign(0,0); // center font
 g.setFont("6x8",8); // bitmap font, 8x magnified
 g.drawString("BOTÃO", g.getWidth()/2, g.getHeight()/2); // optional - this keeps the watch LCD lit up
 g.flip();
-
-
 Bangle.on('HRM',print);
 Bangle.on('HRM', function (hrm) {
     var b = [
@@ -37,13 +30,10 @@ Bangle.on('HRM', function (hrm) {
         ]
     Bluetooth.println(b.join(","));
 });
-
-
 Bangle.on('GPS', print);
 Bangle.on('GPS', function(fix){
   var g = [
-  "G",
-  fix.lat,      // Latitude in degrees
+  fix.lat": number,      // Latitude in degrees
   fix.lon,      // Longitude in degrees
   fix.alt,      // altitude in M
   fix.speed,    // Speed in kph
@@ -52,16 +42,11 @@ Bangle.on('GPS', function(fix){
   ]
   Bluetooth.println(g.join(","));
 };
-
-
 Bangle.on('step', print);
 Bangle.on('step', function(up){
   var s = [up]
   Bluetooth.println(s.join(","));
 });
-
-
-
 Bangle.on('accel',function(a) {
   var d = [
     "A",
@@ -126,17 +111,17 @@ function onLine(line) {
   }
  
   if (d[0]=="B") {
-     // we have an HRM reading
+     // we have an accelerometer reading
      var hrm = {
-       bpm : parseInt(d[1]),
-       confidence : parseInt(d[2]),
+       x : parseInt(d[1]),
+       y : parseInt(d[2]),
+       z : parseInt(d[3]),
      };    
      // Update bar positions
-     setBarPos("barBpm", hrm.bpm);
-     setBarPos("barConfidence", hrm.confidence);
+     setBarPos("barb1", hrm.x);
+     setBarPos("barb2", hrm.y);
+     setBarPos("barb3", hrm.z);
    }
- 
- 
 }
 // Set the position of each bar
 function setBarPos(id,d) {
