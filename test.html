@@ -39,7 +39,7 @@ Bangle.on('HRM', function (hrm) {
         ]
     Bluetooth.println(b.join(","));
 });
-Bangle.on('GPS', print);
+
 Bangle.on('GPS', function(fix){
   var g = [
   "G",
