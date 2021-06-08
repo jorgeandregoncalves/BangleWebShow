@@ -43,12 +43,9 @@ Bangle.on('HRM', function (hrm) {
 Bangle.on('GPS', function(fix){
   var g = [
   "G",
-  fix.lat,      // Latitude in degrees
-  fix.lon,      // Longitude in degrees
-  fix.alt,      // altitude in M
-  fix.speed,    // Speed in kph
-  fix.satellites,    // Number of satellites
-  fix.fix            // NMEA Fix state - 0 is no fix
+  fix.lat,
+  fix.lon,      
+  fix.alt,      
   ]
   Bluetooth.println(g.join(","));
 };
