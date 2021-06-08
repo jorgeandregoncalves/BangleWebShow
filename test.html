@@ -21,21 +21,16 @@
 <script>
 // Code to upload to Bangle.js
 var BANGLE_CODE = `
-
 Bangle.setGPSPower(1)
 Bangle.setHRMPower(1);
-
 g.clear(); // draw the current counter value
 g.setFontAlign(0,0); // center font
 g.setFont("6x8",8); // bitmap font, 8x magnified
 g.drawString("BOTÃO", g.getWidth()/2, g.getHeight()/2); // optional - this keeps the watch LCD lit up
 g.flip();
-
-setWatch(function() {
- Bluetooth.println("HELP");
-}, BTN, {edge:"rising", debounce:50, repeat:true});
-
-
+if (BTN5.read()){
+  Bluetooth.println("HELP");
+}
 Bangle.on('HRM', function (hrm) {
     var b = [
         "B",
@@ -44,12 +39,11 @@ Bangle.on('HRM', function (hrm) {
         ]
     Bluetooth.println(b.join(","));
 });
-
 Bangle.on('GPS', print);
 Bangle.on('GPS', function(fix){
   var g = [
   "G",
-  fix.lat,      // Latitude in degrees
+  fix.lat": number,      // Latitude in degrees
   fix.lon,      // Longitude in degrees
   fix.alt,      // altitude in M
   fix.speed,    // Speed in kph
@@ -58,13 +52,11 @@ Bangle.on('GPS', function(fix){
   ]
   Bluetooth.println(g.join(","));
 };
-
 Bangle.on('step', print);
 Bangle.on('step', function(up){
   var s = [up]
   Bluetooth.println(s.join(","));
 });
-
 Bangle.on('accel',function(a) {
   var d = [
     "A",
@@ -163,9 +155,9 @@ function onLine(line) {
        steps : parseInt(s[1]),
      };    
      // Update bar positions
-     setBarPos("barSteps", up.steps);
+     setBarPos("barSteps", s.steps);
    }
-  if (d[0]=="HELP") {
+  if (d[0]=="Help") {
      // Update bar positions
      setBarPos("barHelp", 5);
    }
