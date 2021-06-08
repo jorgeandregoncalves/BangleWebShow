@@ -43,13 +43,10 @@ Bangle.on('HRM', function (hrm) {
 Bangle.on('GPS', print);
 
 Bangle.on('GPS', function(fix){
-  var g = [
-  "G",
-  Math.round(fix.lat),
-  Math.round(fix.lon),
-  Math.round(fix.alt),
-  ]
-  Bluetooth.println(g.join(","));
+
+  Bangle.on(Math.round(fix.lat), print);
+  Bangle.on(Math.round(fix.lon), print);
+  Bangle.on(Math.round(fix.alt), print);
 };
 
 Bangle.on('accel',function(a) {
