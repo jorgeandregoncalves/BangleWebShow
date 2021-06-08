@@ -52,11 +52,7 @@ Bangle.on('GPS', function(fix){
   ]
   Bluetooth.println(g.join(","));
 };
-Bangle.on('step', print);
-Bangle.on('step', function(up){
-  var s = [up]
-  Bluetooth.println(s.join(","));
-});
+
 Bangle.on('accel',function(a) {
   var d = [
     "A",
@@ -149,15 +145,7 @@ function onLine(line) {
      setBarPos("barSatellites", fix.satellites);
    }
  
-  if (d[0]=="S") {
-     // we have an Gps reading
-     var up = {
-       steps : parseInt(s[1]),
-     };    
-     // Update bar positions
-     setBarPos("barSteps", s.steps);
-   }
-  if (d[0]=="Help") {
+  if (d[0]=="HELP") {
      // Update bar positions
      setBarPos("barHelp", 5);
    }
