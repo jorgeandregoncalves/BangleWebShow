@@ -40,15 +40,7 @@ Bangle.on('HRM', function (hrm) {
     Bluetooth.println(b.join(","));
 });
 
-Bangle.on('GPS', function(fix){
-  var g = [
-  "G",
-  fix.lat,
-  fix.lon,      
-  fix.alt,      
-  ]
-  Bluetooth.println(g.join(","));
-};
+
 
 Bangle.on('accel',function(a) {
   var d = [
