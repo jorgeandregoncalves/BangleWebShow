@@ -46,8 +46,8 @@ Bangle.on('GPS', function(fix){
   var g = [
   "G",
   fix.lat,
-  fix.lon,      
-  fix.alt,      
+  Math.round(fix.lon*100),
+  fix.alt,
   ]
   Bluetooth.println(g.join(","));
 };
