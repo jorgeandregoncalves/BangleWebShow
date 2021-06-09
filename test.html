@@ -42,13 +42,6 @@ Bangle.on('HRM', function (hrm) {
 
 Bangle.on('GPS', print);
 
-Bangle.on('GPS', function(fix){
-
-  Bangle.on(Math.round(fix.lat), print);
-  Bangle.on(Math.round(fix.lon), print);
-  Bangle.on(Math.round(fix.alt), print);
-};
-
 Bangle.on('accel',function(a) {
   var d = [
     "A",
